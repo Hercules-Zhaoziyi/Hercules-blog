@@ -116,7 +116,9 @@ theme: anzhiyu
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: ''
+  type: git
+  repo: https://github.com/Hercules-Zhaoziyi/Hercules-blog.git
+  branch: main
 
 # envelope_comment
 # see https://akilar.top/posts/e2d3c450/
