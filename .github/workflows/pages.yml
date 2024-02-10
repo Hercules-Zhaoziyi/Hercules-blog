@@ -1,55 +1,47 @@
-name: Build and Deploy Hexo Blog
+name: Deploy Hexo Site
 
 on:
   push:
     branches:
-      - page  # 设置触发分支
+      - page # 设置为你的源码分支名称
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          ref: page  # 检出 page 分支的代码
+    - name: Checkout source
+      uses: actions/checkout@v3
+      with:
+        ref: page # 确保这里的分支名称与你的源码分支名称相对应
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14'  # 设置 Node.js 版本
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16' # 设置为你的项目所需的Node.js版本
 
-      - name: Cache Dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+    - name: Cache node_modules
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
 
-      - name: Install Dependencies
-        run: |
-          npm install
-          npm install -g hexo-cli
-          npm install hexo-deployer-git --save # 安装 hexo-deployer-git
+    - name: Install Dependencies
+      run: npm install
 
-      - name: Configure Git
-        run: |
-          git config --local user.email "peterzhaoziyi@gmail.com"
-          git config --local user.name "Hercules-Zhaoziyi"
-        env:
-          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
-          GIT_NAME: ${{ secrets.GIT_NAME }}
+    - name: Install hexo-deployer-git
+      run: npm install hexo-deployer-git --save
 
-      - name: Clean Public Directory
-        run: hexo clean  # 清除缓存和已生成的文件
+    - name: Deploy
+      env:
+        PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }} # 确保在你的GitHub仓库设置中添加了PERSONAL_TOKEN
+        USER_NAME: Hercules-Zhaoziyi # 替换为你的GitHub用户名
+        USER_EMAIL: peterzhaoziyi@gmail.com # 替换为你的GitHub邮件地址
+      run: |
+        git config --global user.name "${USER_NAME}"
+        git config --global user.email "${USER_EMAIL}"
+        npx hexo clean
+        npx hexo generate
+        npx hexo deploy -g
 
-      - name: Generate Static Files
-        run: hexo generate  # 生成静态文件
-
-      - name: Deploy
-        run: hexo deploy  # 部署到配置的服务器
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
