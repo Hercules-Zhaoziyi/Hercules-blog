@@ -34,8 +34,8 @@ jobs:
           cp -R public/* build/
       - name: Commit and push changes to main branch
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config --local user.email "peterzhaoziyi@gmail.com"
+          git config --local user.name "Hercules-Zhaoziyi"
           git add build/
           git commit -m "Deploy to GitHub Pages" -a || echo "No changes to commit"
           git push
