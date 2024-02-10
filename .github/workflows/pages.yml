@@ -1,51 +1,41 @@
-name: Deploy Hexo Site
+name: Deploy Hexo Blog
 
 on:
   push:
     branches:
-      - page
+      - page  # 设置触发分支
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      # 检出 page 分支
-      - name: Checkout Source
+      - name: Checkout source
         uses: actions/checkout@v3
         with:
-          ref: page
+          ref: page  # 检出 page 分支的代码
 
-      # 设置 Node.js 环境
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '14' # Hexo 推荐的版本，可根据需要调整
+          node-version: '14'  # 设置 Node.js 版本
 
-      # 安装 Hexo 及依赖
-      - name: Install Dependencies
+      - name: Install and Build
         run: |
-          npm install -g hexo-cli
           npm install
+          npm run build  
+        # 运行 Hexo 构建命令
 
-      # 生成静态文件
-      - name: Generate Static Files
-        run: hexo generate
-
-      # 推送到 main 分支
       - name: Deploy to Main Branch
         run: |
-          git config --global user.name 'Hercules-Zhaoziyi'
-          git config --global user.email 'peterzhaoziyi@gmail.com'
-          git checkout main
-          # 清除旧文件，假设 main 分支只有静态文件
-          git rm -r *
-          # 复制新的构建文件到主分支
-          cp -r public/* .
-          # 添加所有文件至 git
+          git config --global user.name 'Hercules-Zhaoziyi' 
+          git config --global user.email 'peterzhaoziyi@gmail.com' 
+          git checkout -b main 
+          git rm -rf .
+          cp -r public/* . 
           git add .
-          # 检查是否有变动，如果有，则提交
-          git diff --quiet && git diff --staged --quiet || git commit -m 'Update Hexo site'
-          # 推送到 main 分支
-          git push origin main
+          git commit -m "Deploy Hexo site"  
+          git push -f origin main 
+
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 使用 GITHUB_TOKEN 进行认证
