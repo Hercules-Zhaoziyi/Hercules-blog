@@ -30,9 +30,11 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install Dependencies
-        run: npm install
+        run: |
+          npm install
+          npm install -g hexo-cli  # 全局安装 hexo-cli
 
-      - name: Build
+      - name: Generate Static Files
         run: hexo generate  # 生成静态文件
 
       - name: Deploy
