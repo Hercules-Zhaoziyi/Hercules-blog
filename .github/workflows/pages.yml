@@ -3,7 +3,7 @@ name: Build and Deploy Hexo Blog
 on:
   push:
     branches:
-      - page  # 设置触发分支
+      - page  # Set the trigger branch
 
 jobs:
   deploy:
@@ -12,12 +12,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: page  # 检出 page 分支的代码
+          ref: page  # Check out the code of the page branch
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '14'  # 设置 Node.js 版本
+          node-version: '14'  # Set the Node.js version
 
       - name: Cache Dependencies
         uses: actions/cache@v3
@@ -33,17 +33,25 @@ jobs:
         run: |
           npm install
           npm install -g hexo-cli
-          npm install hexo-deployer-git --save # 添加这行来安装 hexo-deployer-git
+          npm install hexo-deployer-git --save # Install hexo-deployer-git
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "peterzhaoziyi@gmail.com"
+          git config --local user.name "Hercules-Zhaoziyi"
+        env:
+          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
+          GIT_NAME: ${{ secrets.GIT_NAME }}
 
       - name: Clean Public Directory
-        run: hexo clean  # 清除缓存和已生成的文件
+        run: hexo clean  # Clear cache and generated files
 
       - name: Generate Static Files
-        run: hexo generate  # 生成静态文件
+        run: hexo generate  # Generate static files
 
       - name: Deploy
-        run: hexo deploy  # 部署到配置的服务器
+        run: hexo deploy  # Deploy to the configured server
         env:
-          # 这里的环境变量需要根据你的部署方式进行设置
-          # 例如，如果你是部署到 GitHub Pages，则需要设置 GH_TOKEN 或者其他的访问令牌
+          # Set the environment variable according to your deployment method
+          # For example, if you are deploying to GitHub Pages, you need to set GH_TOKEN or another access token
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
