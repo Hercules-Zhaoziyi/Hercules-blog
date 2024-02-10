@@ -34,6 +34,9 @@ jobs:
           npm install
           npm install -g hexo-cli  # 全局安装 hexo-cli
 
+      - name: Clean Public Directory
+        run: hexo clean  # 清除缓存和已生成的文件
+
       - name: Generate Static Files
         run: hexo generate  # 生成静态文件
 
@@ -42,4 +45,4 @@ jobs:
         env:
           # 这里的环境变量需要根据你的部署方式进行设置
           # 例如，如果你是部署到 GitHub Pages，则需要设置 GH_TOKEN 或者其他的访问令牌
-           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
