@@ -3,16 +3,15 @@ name: Pages
 on:
   push:
     branches:
-      - page # default branch
+      - main # default branch
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          # If your repository depends on submodule, please see: https://github.com/actions/checkout
           submodules: recursive
       - name: Use Node.js 16.x
         uses: actions/setup-node@v2
@@ -29,20 +28,14 @@ jobs:
         run: npm install
       - name: Build
         run: npm run build
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v2
-        with:
-          path: ./public
-
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          ref: main
-      - name: Push to main branch
+      - name: Copy files to the build directory
         run: |
-          git config --local user.email "Hercules2005github"
-          git config --local user.name "Hercules-Zhaoziyi"
-          git add .
-          git commit -m "Auto commit"
-          git push origin main
-      
+          mkdir -p build
+          cp -R public/* build/
+      - name: Commit and push changes to main branch
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add build/
+          git commit -m "Deploy to GitHub Pages" -a || echo "No changes to commit"
+          git push
