@@ -1,65 +1,44 @@
-name: Pages
+name: Build and Deploy
 
 on:
   push:
     branches:
-      - page # This workflow is triggered when changes are pushed to the 'page' branch
+      - page
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      # Check out the 'page' branch
-      - uses: actions/checkout@v3
+      - name: Checkout Page Branch
+        uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          submodules: recursive
           ref: page
 
-      # Set up the Node.js environment
-      - name: Use Node.js 16.x
+      - name: Setup Node.js environment
         uses: actions/setup-node@v2
         with:
           node-version: '16'
 
-      # Cache NPM dependencies
-      - name: Cache NPM dependencies
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: ${{ runner.OS }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-npm-cache-
-
-      # Install NPM dependencies
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm install
 
-      # Build the project
-      - name: Build
+      - name: Run build
         run: npm run build
 
-      # List contents of the build directory
-      - name: List build directory
-        run: ls build
+      - name: List output files
+        run: ls -l build/
 
-      # Check out the 'main' branch
-      - name: Checkout the main branch
+      - name: Checkout Main Branch
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           ref: main
+          token: ${{ secrets.GITHUB_TOKEN }} # Required for push access
 
-      # Copy build contents to the root of the 'main' branch
-      - name: Copy build contents to the root of the 'main' branch
+      - name: Copy files to Main Branch
         run: |
-          cp -R build/* . || echo "No build files to copy"
-
-      # Commit and push changes to the 'main' branch
-      - name: Commit and push changes to main branch
-        run: |
-          git config --local user.email "peterzhaoziyi@gmail.com"
-          git config --local user.name "Hercules-Zhaoziyi"
+          cp -a build/. .
+          git config user.name 'Your Name'
+          git config user.email 'your-email@example.com'
           git add .
-          git commit -m "Deploy to main branch" -a || echo "No changes to commit"
-          git push origin HEAD:main # Pushes the commit to the 'main' branch
+          git diff --quiet && git diff --staged --quiet || git commit -m 'Deploy to Main Branch'
+          git push
