@@ -800,7 +800,8 @@ translate:
 readmode: true
 
 # 中控台
-centerConsole: true
+centerConsole: 
+  enable: true
 
 # dark mode
 darkmode:
