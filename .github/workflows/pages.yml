@@ -12,7 +12,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          # If your repository depends on submodule, please see: https://github.com/actions/checkout
           submodules: recursive
       - name: Use Node.js 16.x
         uses: actions/setup-node@v2
@@ -29,28 +28,31 @@ jobs:
         run: npm install
       - name: Build
         run: npm run build
+      - name: Upload Pages artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: pages
+          path: ./public
   deploy:
     needs: build
     permissions:
-      pages: write
-      id-token: write
+      contents: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy to Main Branch
         id: deployment
-        uses: actions/deploy-pages@v2
-      - name: Checkout main branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
         with:
           ref: main
-      - name: Copy generated files to main branch
+      - name: Copy Pages artifact
+        run: cp -R ${{ needs.build.outputs.artifacts.pages }}/* .
+      - name: Commit and Push Changes
         run: |
-          cp -R ${{ steps.deployment.outputs.page_url }}/* .
+          git config --global user.name "Hercules-Zhaoziyi"
+          git config --global user.email "peterzhaoziyi@gmail.com"
           git add .
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ github.actor }}@users.noreply.github.com"
-          git commit -m "Update generated files"
-          git push
+          git commit -m "Update GitHub Pages"
+          git push origin main
