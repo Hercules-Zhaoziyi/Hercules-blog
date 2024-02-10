@@ -12,8 +12,9 @@ hexo.extend.tag.register("dogeplayer", function (args) {
     '<div id="' +
     divId +
     '"></div>\n' +
-    '<script type="text/javascript" data-pjax src="https://player.dogecloud.com/js/loader"></script>\n' +
-    '<script type="text/javascript" data-pjax defer>\n' +
+    '<div class="js-pjax">\n' +
+    '<script type="text/javascript" src="https://player.dogecloud.com/js/loader"></script>\n' +
+    '<script type="text/javascript" defer>\n' +
     "  setTimeout(() => {\n" +
     "    var dogePlayer = new DogePlayer({\n" +
     '        container: document.getElementById("' +
@@ -28,7 +29,8 @@ hexo.extend.tag.register("dogeplayer", function (args) {
     "        autoPlay: false\n" +
     "    });\n" +
     "  }, 300);\n" +
-    "</script>\n";
+    "</script>\n" +
+    "</div>";
 
   return html;
 });

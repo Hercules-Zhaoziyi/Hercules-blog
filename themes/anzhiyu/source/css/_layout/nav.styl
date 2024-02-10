@@ -24,7 +24,8 @@
 
 #sidebar .menus_item ul
   padding-left: 0px
-
+#sidebar #sidebar-menus .menus_items a.site-page
+  padding-left: .3rem
 #nav-group
   max-width: 1400px;
   width: 100%;
@@ -50,6 +51,7 @@
     margin-left: 1rem
     &:hover
       i
+        background: var(--anzhiyu-main)
         &.left
           width: calc(var(--icon-size)/2.5);
         &.center
@@ -108,62 +110,39 @@
       transform: rotate(45deg) !important;
 [data-theme="dark"] #center-console:checked + label:is(.widget, #center-console:checked + label .widget:hover) i
   background: var(--anzhiyu-black) !important;
-#body-wrap
-  .nav-fixed #travellings_button
-    &::after
-      background: var(--anzhiyu-main) !important;
-
-  #travellings_button
-    display: flex
-    &:hover::after
-      opacity: 1;
-      transform: none;
-      visibility: visible;
-    &:hover
-      a
-        background: var(--anzhiyu-main);
-        -webkit-box-shadow: var(--anzhiyu-shadow-main);
-        box-shadow: var(--anzhiyu-shadow-main);
-        i
-          color: var(--anzhiyu-white);
-    &::after
-      --height: 2rem;
-      content: attr(title);
-      position: fixed;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: var(--anzhiyu-white);
-      background: var(--anzhiyu-white-op) !important;
-      box-shadow: var(--anzhiyu-shadow-nav);
-      border-radius: var(--anzhiyu-radius-full);
-      width: fit-content;
-      height: var(--height);
-      font-size: var(--global-font-size);
-      white-space: nowrap;
-      margin: auto;
-      padding: 0 4em;
-      top: calc((60px - var(--height)) / 2);
-      right: 0;
-      left: 0;
-      line-height: 0;
-      opacity: 0;
-      z-index: 1;
-      visibility: hidden;
-      transform: scaleX(1.1);
-      pointer-events: none;
-      transition: .5s;
-      +maxWidth900()
-        padding: 0 2em;
-
-#body-wrap:has(#travellings_button:hover) 
-  #page-name,
-  #nav #menus
-    display: none
-#body-wrap .page #travellings_button:hover
+div#travellings_button
+  display: flex
+  &:hover::after
+    opacity: 1;
+    transform: none;
+    visibility: visible;
   &::after
+    --height: 2rem;
+    content: attr(title);
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--anzhiyu-white);
     background: var(--anzhiyu-main) !important;
-
+    box-shadow: var(--anzhiyu-shadow-nav);
+    border-radius: var(--anzhiyu-radius-full);
+    width: fit-content;
+    height: var(--height);
+    font-size: var(--global-font-size);
+    white-space: nowrap;
+    margin: auto;
+    padding: 0 4em;
+    top: calc((60px - var(--height)) / 2);
+    right: 0;
+    left: 0;
+    line-height: 0;
+    opacity: 0;
+    z-index: 1;
+    visibility: hidden;
+    transform: scaleX(1.1);
+    pointer-events: none;
+    transition: .5s;
 
 @media screen and (max-width: 768px)
   #page-header #nav
@@ -181,6 +160,9 @@
     background: none
 
   div#travellings_button
+    display: none !important
+
+  #randomPost_button
     display: none !important
 
 #nav 
@@ -206,7 +188,7 @@
   cursor pointer
 
 #nav #menus
-  padding 0 calc((100% - 1400px + 3rem) / 2)
+  padding 0 calc((100% - 1370px) / 2)
   display flex
   justify-content center
   width 100%
@@ -237,19 +219,22 @@
   transition all 0.3s
   display inline-block
   margin 0 3px
-
+#nav .menus_items .menus_item .menus_item_child:before
+  top -20px
 #site-name, .shuoshuo
   white-space nowrap
   overflow hidden
 #site-name
-  padding 0 2px
-  height: 35px;
-  line-height: 35px;
+  padding 0 8px
   position relative
   display flex
   align-items center
   justify-content center
   transition 0.3s
+
+/* 圆角隐藏 */
+ul.menus_item_child
+  border-radius 5px
 
 /* 一级菜单居中 */
 #nav .menus_items
@@ -263,6 +248,25 @@
   flex-direction row
   justify-content center
 
+#nav .menus_items .menus_item:hover .menus_item_child
+  display block
+  transform translateX(-50%)
+  right auto
+  left auto !important
+  padding 6px 4px
+  box-sizing content-box
+  line-height 35px
+
+#nav .menus_items .menus_item .menus_item_child
+  top 44px
+  box-shadow var(--anzhiyu-shadow-black)
+  border var(--style-border)
+  transition 0.3s
+  background-color var(--anzhiyu-card-bg)
+  border-radius 50px
+#nav .menus_items .menus_item .menus_item_child:hover
+  border var(--style-border-hover)
+  box-shadow var(--anzhiyu-shadow-main)
 #nav 
   #blog_name,
   .mask-name-container,
@@ -283,34 +287,12 @@
       transition 0.3s
       box-shadow var(--anzhiyu-shadow-main)
 .post #nav 
-  #blog_name .back-home-button,
-  #blog_name #site-name,
-  #nav-right .nav-button a,
+  #blog_name,
+  .mask-name-container,
+  #menus,
+  #nav-right .nav-button,
   #nav-right #toggle-menu
-    &:hover
-      color var(--anzhiyu-white)
-      background var(--anzhiyu-white-op)
-      transition 0.3s
-.post #nav 
-  #menus .menus_item
-    &:hover > a
-      color var(--anzhiyu-white)
-      background var(--anzhiyu-white-op)
-      transition 0.3s
-
-.post .nav-fixed #nav 
-  #menus .menus_item
-    &:hover
-      > a.site-page
-        color var(--anzhiyu-white)
-        background var(--anzhiyu-main)
-        transition 0.3s
-        box-shadow var(--anzhiyu-shadow-main)
-  #blog_name #site-name,
-  #blog_name .back-home-button,
-  #nav-right .nav-button a,
-  #nav-right #toggle-menu
-    &:hover
+    a:hover
       color var(--anzhiyu-white)
       background var(--anzhiyu-main)
       transition 0.3s
@@ -360,7 +342,7 @@
     color var(--anzhiyu-white) !important
     font-weight 700
     line-height 2
-@media screen and (min-width: 1200px)
+@media screen and (min-width: 1201px)
   #page-header.nav-fixed #nav #page-name:hover:after
     opacity 1
   #page-header.nav-fixed #nav #page-name:hover
@@ -389,7 +371,14 @@
   padding 0em 0.8em 0em 1em
   height 35px
   line-height 35px
-  transition: color 0s !important
+
+#nav .menus_items .menus_item
+  padding 0 0.4rem
+  display flex
+  flex-direction column
+  align-items center
+  margin auto
+  position relative
 
 #nav div#toggle-menu
   padding 2px 0 4px 6px
@@ -431,31 +420,27 @@
   border-radius 8px
 
 .back-home-button:hover .back-menu-list-groups
-  display: flex;
-  opacity: 1;
-  transition: .3s;
-  top: 55px;
-  pointer-events: auto;
-  left: 0rem;
-  transform: scale(1);
+  display flex
+  opacity 1
+  transition 0.3s
+  top 55px
+  pointer-events auto
+  left 0
 
 .back-home-button .back-menu-list-groups
-  position: absolute;
-  top: 45px;
-  transform: scale(.8);
-  transform-origin: top left;
-  left: 0rem;
-  background-color: var(--anzhiyu-maskbgdeep);
-  border-radius: 12px;
-  border: var(--style-border);
-  flex-direction: column;
-  font-size: 12px;
-  color: var(--anzhiyu-secondtext);
-  box-shadow: var(--anzhiyu-shadow-border);
-  transition: .1s;
-  opacity: 0;
-  pointer-events: none;
-  backdrop-filter: blur(20px);
+  position absolute
+  top 65px
+  left 0
+  background var(--anzhiyu-card-bg)
+  border-radius 12px
+  border var(--style-border)
+  flex-direction column
+  font-size 12px
+  color var(--anzhiyu-secondtext)
+  box-shadow var(--anzhiyu-shadow-border)
+  transition 0s
+  opacity 0
+  pointer-events none
 
 .back-home-button .back-menu-list-group
   display flex
@@ -474,12 +459,11 @@
 
 .back-home-button .back-menu-list::before
   position absolute
-  top -24px
+  top -22px
   left 0px
   width 100%
   height 25px
   content ""
-  transition: 0s
 
 .back-home-button .back-menu-list-groups .back-menu-list-group:last-child .back-menu-list
   margin 0 0 8px
@@ -500,18 +484,13 @@
   border-radius 8px !important
   transition 0.2s !important
 
-.back-menu-list-groups .back-menu-list .back-menu-item .back-menu-item-text
+.back-home-button .back-menu-list .back-menu-item .back-menu-item-text
   font-size var(--global-font-size)
   margin-left 0.5rem
   color var(--anzhiyu-fontcolor)
   white-space nowrap
-  +maxWidth768()
-    font-size: 14px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
 
-.back-menu-list-groups .back-menu-list .back-menu-item .back-menu-item-icon
+.back-home-button .back-menu-list .back-menu-item .back-menu-item-icon
   width 24px
   height 24px
   border-radius 24px
@@ -593,7 +572,6 @@
   font-size: 1.2rem;
   padding: 0 5px;
   line-height: 2rem;
-  transition: color 0s;
 
 .post #blog_name #site-name .title
   transition 0s
@@ -712,11 +690,11 @@
 /* 媒体查询适配 */
 @media screen and (max-width: 1390px)
   #nav
-    padding 0 1.5rem
+    padding 15px
   #nav .mask-name-container
-    padding 0 1.5rem
+    padding 15px
   div#menus
-    padding 0 1.5rem
+    padding 15px
 
 @media screen and (min-width: 900px)
   #nav .back-home-button:hover
@@ -733,7 +711,7 @@
     border-bottom none
     background var(--anzhiyu-background)
   #page-header #nav #nav-right div
-    margin-left .5rem
+    margin-left 1rem
 
 @media screen and (min-width: 768px)
   .menus_item:hover > a.site-page

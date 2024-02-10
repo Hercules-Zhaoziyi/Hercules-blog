@@ -35,10 +35,7 @@
   .reward-main
     position: absolute;
     bottom: 40px;
-    if hexo-config('ptool.enable') == true && hexo-config('ptool.mode')
-      left: 0;
-    else
-      left: -70%;
+    left: 0px;
     z-index: 90;
     display: none;
     padding: 0px 0px 15px;
@@ -108,7 +105,7 @@
           margin-bottom: 0rem;
           font-weight: bold;
         .reward-dec
-          font-size: 12px;
+          font-size: 0.6rem;
 .reward-link.mode
   background: var(--anzhiyu-green);
   color: var(--anzhiyu-white);
@@ -125,11 +122,6 @@
     box-shadow: none;
   a
     color: var(--anzhiyu-white);
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   i
     margin-right: 4px;
 

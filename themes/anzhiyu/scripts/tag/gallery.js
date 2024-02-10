@@ -1,5 +1,5 @@
 /**
- * AnZhiYu
+ * Butterfly
  * galleryGroup and gallery
  * {% galleryGroup [name] [descr] [url] [img] %}
  * {% gallery [lazyload],[rowHeight],[limit] %}

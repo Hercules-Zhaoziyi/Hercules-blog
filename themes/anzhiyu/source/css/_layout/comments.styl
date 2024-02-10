@@ -1,16 +1,3 @@
-#article-container
-  > header
-    height 0
-    text-indent:-9999px;
-    time, span
-      height: 0;
-      display: block;
-    h1
-      z-index: -1
-      pointer-events: none
-    a
-      background: none !important
-      border-bottom: none !important
 #post-comment
   .comment-head
     margin-bottom: 20px
@@ -29,7 +16,7 @@
       margin-left: auto;
       font-size: 13px;
 
-    .comment-switch
+    #comment-switch
       display: inline-block
 
       if hexo-config('comments.text')
@@ -51,7 +38,7 @@
       .second-comment
         color: $comments-switch-second-text
 
-      #switch-btn
+      .switch-btn
         position: relative
         display: inline-block
         margin: -4px 8px 0
@@ -74,24 +61,12 @@
           content: ''
           transition: .4s
 
+        &.move
+          background-color: $comments-switch-second-text
+
+          &:before
+            transform: translateX(20px)
+
   .comment-wrap
-    > div
-      animation: tabshow .5s
-
-      &:nth-child(2)
-        display: none
-
-  &.move
-    #switch-btn
-      background-color: $comments-switch-second-text
-
-      &:before
-        transform: translateX(20px)
-
-    .comment-wrap
-      > div
-        &:first-child
-          display: none
-
-        &:last-child
-          display: block
+    > div:nth-child(2)
+      display: none
