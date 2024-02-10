@@ -1,4 +1,4 @@
-name: Deploy Hexo Blog
+name: Build and Deploy Hexo Blog
 
 on:
   push:
@@ -6,11 +6,10 @@ on:
       - page  # 设置触发分支
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout source
+      - name: Checkout
         uses: actions/checkout@v3
         with:
           ref: page  # 检出 page 分支的代码
@@ -20,22 +19,25 @@ jobs:
         with:
           node-version: '14'  # 设置 Node.js 版本
 
-      - name: Install and Build
-        run: |
-          npm install
-          npm run build  
-        # 运行 Hexo 构建命令
+      - name: Cache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-      - name: Deploy to Main Branch
-        run: |
-          git config --global user.name 'Hercules-Zhaoziyi' 
-          git config --global user.email 'peterzhaoziyi@gmail.com' 
-          git checkout -b main 
-          git rm -rf .
-          cp -r public/* . 
-          git add .
-          git commit -m "Deploy Hexo site"  
-          git push -f origin main 
+      - name: Install Dependencies
+        run: npm install
 
+      - name: Build
+        run: hexo generate  # 生成静态文件
+
+      - name: Deploy
+        run: hexo deploy  # 部署到配置的服务器
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 使用 GITHUB_TOKEN 进行认证
+          # 这里的环境变量需要根据你的部署方式进行设置
+          # 例如，如果你是部署到 GitHub Pages，则需要设置 GH_TOKEN 或者其他的访问令牌
+           GH_TOKEN: ${{ secrets.GH_TOKEN }}
