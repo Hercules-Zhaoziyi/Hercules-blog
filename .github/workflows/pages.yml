@@ -42,18 +42,19 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-steps:
-  - name: Checkout repository
-    uses: actions/checkout@v2
-    with:
-      ref: main
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          ref: main
 
   # 添加其他步骤来构建和准备要推送的文件
 
-  - name: Push to main branch
-    run: |
-      git config --local user.email "action@github.com"
-      git config --local user.name "GitHub Action"
-      git add .
-      git commit -m "Auto commit"
-      git push origin main
+      - name: Push to main branch
+        run: |
+          git config --local user.email "Hercules2005github"
+          git config --local user.name "Hercules-Zhaoziyi"
+          git add .
+          git commit -m "Auto commit"
+          git push origin main
+      
