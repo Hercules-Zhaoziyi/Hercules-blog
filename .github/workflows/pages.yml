@@ -32,7 +32,8 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install
-          npm install -g hexo-cli  # 全局安装 hexo-cli
+          npm install -g hexo-cli
+          npm install hexo-deployer-git --save # 添加这行来安装 hexo-deployer-git
 
       - name: Clean Public Directory
         run: hexo clean  # 清除缓存和已生成的文件
