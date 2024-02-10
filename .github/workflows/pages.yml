@@ -3,39 +3,59 @@ name: Pages
 on:
   push:
     branches:
-      - page # default branch
+      - page # This workflow is triggered when changes are pushed to the 'page' branch
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+      # Check out the 'page' branch
       - uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           submodules: recursive
+          ref: page
+
+      # Set up the Node.js environment
       - name: Use Node.js 16.x
         uses: actions/setup-node@v2
         with:
           node-version: '16'
+
+      # Cache NPM dependencies
       - name: Cache NPM dependencies
         uses: actions/cache@v2
         with:
           path: node_modules
-          key: ${{ runner.OS }}-npm-cache
+          key: ${{ runner.OS }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.OS }}-npm-cache
+            ${{ runner.OS }}-npm-cache-
+
+      # Install NPM dependencies
       - name: Install Dependencies
         run: npm install
+
+      # Build the project
       - name: Build
         run: npm run build
-      - name: Copy files to the build directory
+
+      # Check out the 'main' branch
+      - name: Checkout the main branch
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: main
+
+      # Copy build contents to the root of the 'main' branch
+      - name: Copy build contents to the root of the 'main' branch
         run: |
-          mkdir -p build
-          cp -R public/* build/
+          cp -R build/* .
+
+      # Commit and push changes to the 'main' branch
       - name: Commit and push changes to main branch
         run: |
           git config --local user.email "peterzhaoziyi@gmail.com"
           git config --local user.name "Hercules-Zhaoziyi"
-          git add build/
-          git commit -m "Deploy to GitHub Pages" -a || echo "No changes to commit"
-          git push
+          git add .
+          git commit -m "Deploy to main branch" -a || echo "No changes to commit"
+          git push origin HEAD:main # Pushes the commit to the 'main' branch
