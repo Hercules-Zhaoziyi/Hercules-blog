@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Deploy Hexo Site
 
 on:
   push:
@@ -9,36 +9,43 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Page Branch
+      # 检出 page 分支
+      - name: Checkout Source
         uses: actions/checkout@v3
         with:
           ref: page
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v2
+      # 设置 Node.js 环境
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '14' # Hexo 推荐的版本，可根据需要调整
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run build
-        run: npm run build
-
-      - name: List output files
-        run: ls -l build/
-
-      - name: Checkout Main Branch
-        uses: actions/checkout@v3
-        with:
-          ref: main
-          token: ${{ secrets.GITHUB_TOKEN }} # Required for push access
-
-      - name: Copy files to Main Branch
+      # 安装 Hexo 及依赖
+      - name: Install Dependencies
         run: |
-          cp -a /. .
-          git config user.name 'Your Name'
-          git config user.email 'your-email@example.com'
+          npm install -g hexo-cli
+          npm install
+
+      # 生成静态文件
+      - name: Generate Static Files
+        run: hexo generate
+
+      # 推送到 main 分支
+      - name: Deploy to Main Branch
+        run: |
+          git config --global user.name 'Hercules-Zhaoziyi'
+          git config --global user.email 'peterzhaoziyi@gmail.com'
+          git checkout main
+          # 清除旧文件，假设 main 分支只有静态文件
+          git rm -r *
+          # 复制新的构建文件到主分支
+          cp -r public/* .
+          # 添加所有文件至 git
           git add .
-          git diff --quiet && git diff --staged --quiet || git commit -m 'Deploy to Main Branch'
-          git push
+          # 检查是否有变动，如果有，则提交
+          git diff --quiet && git diff --staged --quiet || git commit -m 'Update Hexo site'
+          # 推送到 main 分支
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
