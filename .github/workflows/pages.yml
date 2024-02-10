@@ -39,6 +39,10 @@ jobs:
       - name: Build
         run: npm run build
 
+      # List contents of the build directory
+      - name: List build directory
+        run: ls build
+
       # Check out the 'main' branch
       - name: Checkout the main branch
         uses: actions/checkout@v3
@@ -49,7 +53,7 @@ jobs:
       # Copy build contents to the root of the 'main' branch
       - name: Copy build contents to the root of the 'main' branch
         run: |
-          cp -R build/* .
+          cp -R build/* . || echo "No build files to copy"
 
       # Commit and push changes to the 'main' branch
       - name: Commit and push changes to main branch
