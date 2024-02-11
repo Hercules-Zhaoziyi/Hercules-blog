@@ -56,6 +56,21 @@
       link: https://blog.itciraos.cn
       avatar: https://gcore.jsdelivr.net/gh/ciraos/ciraos-static@main/img/2022-12-30-23-26-12.webp
       descr: Dare && Do
+
+    - name: 阳小楊
+      link: https://blog.yxyang.top
+      avatar: https://pic.imgdb.cn/item/65708f75c458853aefa8c951.jpg
+      descr: '无人了解你的灵魂．'
+
+    - name: 呆鱼
+      link: https://daiyu.fun/
+      avatar: https://daiyu.fun/img/avatar.png
+      descr: Hello World！
+
+    - name: 小朊的朋友圈
+      link: https://www.xrpyq.com
+      avatar: https://api.xrpyq.com/storage/users/files/1/g.webp
+      descr: 隔牖风惊竹，开门雪满山！
    
     - name: Kindle deep
       hundredSuffix: ""
