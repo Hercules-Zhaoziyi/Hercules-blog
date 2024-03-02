@@ -85,6 +85,7 @@
     music_title: 房东的猫、青春、钢琴曲
     music_bg: https://p2.music.126.net/Mrg1i7DwcwjWBvQPIMt_Mg==/79164837213438.jpg
     music_link: /music
+  
   reward_list:
     - name: 蜡笔不小薪^
       amount: 15.0
@@ -95,4 +96,20 @@
     - name: 蜡笔不小薪^
       amount: 9.9
       datatime: 2023-07-26
+    - name: rearea
+      amount: 20
+      datatime: 2024-02-05
+    - name: 小阮
+      amount: 2
+      datatime: 2024-02-06
+    - name: Shiroi
+      amount: 23.33
+      datatime: 2024-02-12
+    - name: 不想学数学
+      amount: 8.88
+      datatime: 2024-02-25
+    - name: 
+      amount: 
+      datatime: 
+
   extra: false
